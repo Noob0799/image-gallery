@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {withRouter} from 'react-router-dom';
+import Axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -58,6 +59,24 @@ const SignUp = (props) => {
             props.history.push('/login');
         }
     }
+    const handleSignUp = () => {
+      const fname = document.getElementById('firstName').value;
+      const lname = document.getElementById('lastName').value;
+      const name = fname + " " + lname;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      if(fname && lname && email && password) {
+        const userDetails = {name,email,password};
+        Axios.post('http://localhost:5000/auth/signup',userDetails)
+          .then(res => {
+            console.log(res.data.message);
+            props.history.push('/login');
+          })
+          .catch(err => {
+            console.log(err);
+          })
+      }
+    }
     return (
         <Container component="main" maxWidth="xs">
           <CssBaseline />
@@ -68,7 +87,7 @@ const SignUp = (props) => {
             <Typography component="h1" variant="h5">
               Sign up
             </Typography>
-            <form className={classes.form} noValidate>
+            <div className={classes.form}>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -121,11 +140,12 @@ const SignUp = (props) => {
                 </Grid>
               </Grid>
               <Button
-                type="submit"
+                type="button"
                 fullWidth
                 variant="contained"
                 color="primary"
                 className={classes.submit}
+                onClick={handleSignUp}
               >
                 Sign Up
               </Button>
@@ -136,7 +156,7 @@ const SignUp = (props) => {
                     </div>
                 </Grid>
               </Grid>
-            </form>
+            </div>
           </div>
         </Container>
       );

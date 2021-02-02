@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {withRouter} from 'react-router-dom';
+import Axios from 'axios';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -52,12 +53,29 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-const Login = (props) => {
+  const Login = (props) => {
     const classes = useStyles();
     const handleClick = (option) => {
         if(option === 'signup') {
             props.history.push('/signup');
         }
+    }
+
+    const handleLogin = () => {
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      if(email && password) {
+        const userDetails = {email,password};
+        Axios.post('http://localhost:5000/auth/login',userDetails)
+          .then(res => {
+            console.log(res.data.message);
+            sessionStorage.setItem('token', res.data.token);
+            props.history.push('/upload');
+          })
+          .catch(err => {
+            console.log(err);
+          })
+      }
     }
 
   return (
@@ -70,13 +88,13 @@ const Login = (props) => {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <div className={classes.form}>
           <TextField
             variant="outlined"
             margin="normal"
             required
             fullWidth
-            id="email"
+            id="login-email"
             placeholder="Email eg: abcd@gmail.com"
             name="email"
             autoComplete="email"
@@ -90,15 +108,16 @@ const Login = (props) => {
             name="password"
             placeholder="Password"
             type="password"
-            id="password"
+            id="login-password"
             autoComplete="current-password"
             className={classes.textbox}
           />
           <Button
-            type="submit"
+            type="button"
             fullWidth
             variant="contained"
             className={classes.submit}
+            onClick={handleLogin}
           >
             Sign In
           </Button>
@@ -111,7 +130,7 @@ const Login = (props) => {
               </div>
             </Grid>
           </Grid>
-        </form>
+        </div>
       </div>
     </Container>
   );
