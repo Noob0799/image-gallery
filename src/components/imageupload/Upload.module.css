@@ -1,0 +1,49 @@
+.container {
+    display: inline-block;
+    margin: 4vh 0;
+    padding: 5vh 20vw;
+    background-color: black;
+    color: orange;
+    width: fit-content;
+}
+
+.imageupload, .text, .btn {
+    margin: 2vh 5vw;
+}
+
+.imageupload label, .text label {
+    font-size: 4vw;
+    font-weight: 600;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.uploadbtn, .submitbtn {
+    color: orange;
+    font-weight: 500;
+    font-size: 2vw;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.submitbtn {
+    width: 100%;
+}
+
+.text input {
+    width: 100%;
+    font-size: 3vw;
+    border: none;
+    border-radius: 25px;
+    box-shadow: 0px 0px 5px white;
+    padding: 8px;
+}
+
+.text input:focus {
+    outline: none;
+}
+
+.imagepreview img {
+    margin-top: 2vh;
+    aspect-ratio: 1.5;
+    width: 40vw;
+    height: 100%;
+}
