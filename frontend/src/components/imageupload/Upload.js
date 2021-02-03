@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import {withRouter} from 'react-router-dom';
 import styles from './Upload.module.css';
 import {storage} from '../firebase/index';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Axios from 'axios';
 import Navbar from '../navbar/Navbar';
 
@@ -9,7 +10,8 @@ class Upload extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            image: null
+            image: null,
+            uploading: false
         }
     }
 
@@ -33,24 +35,44 @@ class Upload extends Component {
         const image = document.getElementById("uploadtask").files[0];
         const date = new Date().toLocaleString();
         if(this.state.image && name) {
-            const uploadTask = storage.ref(`images/${name}`).put(image);
+            this.setState({
+                uploading: true
+            });
+            const imgname = name + new Date();
+            const uploadTask = storage.ref(`images/${imgname}`).put(image);
             uploadTask.on('state_changed', 
             (snapshot) => {},
             (error) => {
                 console.log('Firebase image upload error', error);
+                this.setState({
+                    uploading: false
+                });
             },
             () => {
-                storage.ref('images').child(name).getDownloadURL()
+                storage.ref('images').child(imgname).getDownloadURL()
                     .then(url => {
                         console.log('URL', url);
                         const token = sessionStorage.getItem('token');
                         const tokenString = `Bearer ${token}`;
                         const imageData = {img: url,name,date};
-                        Axios.post("/image/upload", imageData, { headers: { Authorization: tokenString } })
+                        Axios.post("http://localhost:5000/image/upload", imageData, { headers: { Authorization: tokenString } })
                             .then(res => {
                                 console.log(res.data.message);
                                 this.props.history.push('/view');
-                            });
+                            })
+                            .catch(err => {
+                                console.log(err);
+                                this.setState({
+                                    uploading: false
+                                });
+                            })
+
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        this.setState({
+                            uploading: false
+                        });
                     })
             });
         }
@@ -89,7 +111,15 @@ class Upload extends Component {
         return (
             <Fragment>
                 <Navbar option='Upload' token={sessionStorage.getItem('token')}/>
-                {element}
+                {
+                    this.state.uploading ?
+                    (
+                        <div className={styles.progress}>
+                            <CircularProgress size="20vw"/>
+                        </div>
+                    ) :
+                    element
+                }
             </Fragment>
         )
     }

@@ -8,7 +8,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Link from '@material-ui/core/Link';
 
 function Copyright() {
   return (
@@ -43,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   footer: {
-    padding: theme.spacing(6),
+    paddingTop: '20vh',
   },
 }));
 
@@ -71,7 +70,7 @@ const Landing = (props) => {
                 <div className={classes.heroContent}>
                 <Container maxWidth="sm">
                     <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-                    Digi<span>Album</span>
+                    Digi <span>Album</span>
                     </Typography>
                     <Typography variant="h5" align="center" color="textSecondary" paragraph>
                     Upload and store your favourite moments here and cherish them anytime you want to.Sign Up with us to get started.

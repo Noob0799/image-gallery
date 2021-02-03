@@ -17,17 +17,17 @@ const imageSchema = mongoose.Schema({
             image: { 
                 type: String,
                 required: true,
-                unique: true,
+                unique: false,
             },
             imagename: { 
                 type: String,
                 required: true,
-                unique: true,
+                unique: false,
             },
             imagedate: { 
                 type: String,
                 required: true,
-                unique: true,
+                unique: false,
             },
         }
     ]

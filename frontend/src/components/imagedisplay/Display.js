@@ -7,6 +7,7 @@ import GridListTileBar from '@material-ui/core/GridListTileBar';
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Navbar from '../navbar/Navbar';
 import Axios from 'axios';
 
@@ -56,6 +57,9 @@ const styles = theme => ({
     option: {
         borderBottom: "2px solid orange",
         padding: "10px"
+    },
+    progress: {
+        paddingTop: "10vh"
     }
 });
 
@@ -67,7 +71,8 @@ class Display extends Component {
             displayData: [],
             date: new Date().toLocaleString(),
             name: '',
-            image: ''
+            image: '',
+            fetched: false
         }
     }
 
@@ -76,13 +81,14 @@ class Display extends Component {
             let displayData = [];
             const token = sessionStorage.getItem('token');
             const tokenString = `Bearer ${token}`;
-            Axios.get('/image/get',{ headers: { Authorization: tokenString } })
+            Axios.get('http://localhost:5000/image/get',{ headers: { Authorization: tokenString } })
                 .then(res => {
                     console.log(res.data.message);
                     displayData = [...res.data.displayData];
                     this.setState({
                         data: [...displayData],
-                        displayData: [...displayData]
+                        displayData: [...displayData],
+                        fetched: true
                     });
                 })
                 .catch(err => {
@@ -206,7 +212,15 @@ class Display extends Component {
         return (
             <Fragment>
                 <Navbar option='View' token={sessionStorage.getItem('token')}/>
-                {element}
+                {
+                    !this.state.fetched ? 
+                    (
+                        <div className={classes.progress}>
+                            <CircularProgress size="20vw"/>
+                        </div>
+                    ) :
+                    element
+                }
             </Fragment>
         )
     }
