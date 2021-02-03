@@ -76,7 +76,7 @@ class Display extends Component {
             let displayData = [];
             const token = sessionStorage.getItem('token');
             const tokenString = `Bearer ${token}`;
-            Axios.get('http://localhost:5000/image/get',{ headers: { Authorization: tokenString } })
+            Axios.get('/image/get',{ headers: { Authorization: tokenString } })
                 .then(res => {
                     console.log(res.data.message);
                     displayData = [...res.data.displayData];
