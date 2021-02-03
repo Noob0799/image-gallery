@@ -1,7 +1,51 @@
 import React, { Fragment } from 'react';
-import styles from './Landing.module.css';
-import Button from '@material-ui/core/Button';
 import {withRouter} from 'react-router-dom';
+import AppBar from '@material-ui/core/AppBar';
+import CameraIcon from '@material-ui/icons/PhotoCamera';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Grid from '@material-ui/core/Grid';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import Link from '@material-ui/core/Link';
+
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      DigiAlbum{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
+
+const useStyles = makeStyles((theme) => ({
+  icon: {
+    marginRight: theme.spacing(2),
+  },
+  heroContent: {
+    padding: theme.spacing(8, 0, 6),
+    '& span': {
+        backgroundColor: 'black',
+        color: 'orange',
+        padding: '1vh 2vw',
+        borderRadius: '10px'
+    }
+  },
+  heroButtons: {
+    marginTop: theme.spacing(4),
+    '& button': {
+        color: 'orange',
+        backgroundColor: 'black',
+        padding: '2vh 5vw',
+    }
+  },
+  footer: {
+    padding: theme.spacing(6),
+  },
+}));
 
 const Landing = (props) => {
     const handleClick = (option) => {
@@ -11,18 +55,43 @@ const Landing = (props) => {
             props.history.push('/signup');
         }
     }
+    const classes = useStyles();
     return (
         <Fragment>
-            <div className={styles.heading}>
-                <span>Digi</span> Album
-            </div>
-            <div className={styles.subheading}>
-                Store your precious moments here and access them anytime free of cost. Start by signing up with us.
-            </div>
-            <div className={styles.buttons}>
-                <Button variant="contained" onClick={() => handleClick('login')}>Log In</Button>
-                <Button variant="contained" onClick={() => handleClick('signup')}>Sign Up</Button>
-            </div>
+            <CssBaseline />
+            <AppBar position="relative">
+                <Toolbar>
+                <CameraIcon className={classes.icon} />
+                <Typography variant="h6" color="inherit" noWrap>
+                    Digital Album
+                </Typography>
+                </Toolbar>
+            </AppBar>
+            <main>
+                <div className={classes.heroContent}>
+                <Container maxWidth="sm">
+                    <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
+                    Digi<span>Album</span>
+                    </Typography>
+                    <Typography variant="h5" align="center" color="textSecondary" paragraph>
+                    Upload and store your favourite moments here and cherish them anytime you want to.Sign Up with us to get started.
+                    </Typography>
+                    <div className={classes.heroButtons}>
+                    <Grid container spacing={2} justify="center">
+                        <Grid item>
+                        <button className="btn btn-dark" onClick={() => handleClick('login')}>Log In</button>
+                        </Grid>
+                        <Grid item>
+                        <button className="btn btn-dark" onClick={() => handleClick('signup')}>Sign Up</button>
+                        </Grid>
+                    </Grid>
+                    </div>
+                </Container>
+                </div>
+            </main>
+            <footer className={classes.footer}>
+                <Copyright />
+            </footer>
         </Fragment>
     )
 }

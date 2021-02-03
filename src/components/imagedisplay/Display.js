@@ -140,7 +140,7 @@ class Display extends Component {
             }
             return 1;
         }
-        let element = <h2>You have to login first...</h2>
+        let element = <h2 style={{paddingTop: "10vh"}}>You have to login first...</h2>
         if(sessionStorage.getItem('token')) {
             element = (
                 <Fragment>
