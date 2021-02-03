@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {withRouter} from 'react-router-dom';
 import Axios from 'axios';
+import Navbar from '../navbar/Navbar';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -79,60 +80,63 @@ const useStyles = makeStyles((theme) => ({
     }
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <div className={classes.form}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="login-email"
-            placeholder="Email eg: abcd@gmail.com"
-            name="email"
-            autoComplete="email"
-            className={classes.textbox}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            placeholder="Password"
-            type="password"
-            id="login-password"
-            autoComplete="current-password"
-            className={classes.textbox}
-          />
-          <Button
-            type="button"
-            fullWidth
-            variant="contained"
-            className={classes.submit}
-            onClick={handleLogin}
-          >
-            Sign In
-          </Button>
-          <Grid container>
-            <Grid item xs>
+    <Fragment>
+      <Navbar option='Login'/>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          <div className={classes.form}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="login-email"
+              placeholder="Email eg: abcd@gmail.com"
+              name="email"
+              autoComplete="email"
+              className={classes.textbox}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              placeholder="Password"
+              type="password"
+              id="login-password"
+              autoComplete="current-password"
+              className={classes.textbox}
+            />
+            <Button
+              type="button"
+              fullWidth
+              variant="contained"
+              className={classes.submit}
+              onClick={handleLogin}
+            >
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item xs>
+              </Grid>
+              <Grid item>
+                <div className={classes.signuplink} onClick={() => handleClick('signup')}>
+                  Don't have an account? Sign Up
+                </div>
+              </Grid>
             </Grid>
-            <Grid item>
-              <div className={classes.signuplink} onClick={() => handleClick('signup')}>
-                Don't have an account? Sign Up
-              </div>
-            </Grid>
-          </Grid>
+          </div>
         </div>
-      </div>
-    </Container>
+      </Container>
+    </Fragment>
   );
 }
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {withRouter} from 'react-router-dom';
 import Axios from 'axios';
+import Navbar from '../navbar/Navbar';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -78,6 +79,8 @@ const SignUp = (props) => {
       }
     }
     return (
+      <Fragment>
+        <Navbar option='SignUp'/>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <div className={classes.paper}>
@@ -159,6 +162,7 @@ const SignUp = (props) => {
             </div>
           </div>
         </Container>
+      </Fragment>
       );
 }
 

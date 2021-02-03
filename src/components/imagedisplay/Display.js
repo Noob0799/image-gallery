@@ -7,6 +7,8 @@ import GridListTileBar from '@material-ui/core/GridListTileBar';
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import Navbar from '../navbar/Navbar';
+import Axios from 'axios';
 
 const styles = theme => ({
     root: {
@@ -64,27 +66,30 @@ class Display extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            data: [],
             displayData: [],
             date: new Date().toLocaleString(),
-            name: 'Itachi',
-            image: 'https://firebasestorage.googleapis.com/v0/b/image-album-e0fc6.appspot.com/o/images%2FItachi?alt=media&token=43b03ff7-ce4b-4b64-ac6d-fca1de8ddcf3'
+            name: '',
+            image: ''
         }
     }
 
     componentDidMount() {
-        const displayData = [];
-        for(let i=0;i<20;i++) {
-            const obj = {
-                name: this.state.name,
-                image: this.state.image,
-                date: this.state.date,
-                id: i
-            };
-            displayData.push(obj);
-        }
-        this.setState({
-            displayData: displayData
-        });
+        let displayData = [];
+        const token = sessionStorage.getItem('token');
+        const tokenString = `Bearer ${token}`;
+        Axios.get('http://localhost:5000/image/get',{ headers: { Authorization: tokenString } })
+            .then(res => {
+                console.log(res.data.message);
+                displayData = [...res.data.displayData];
+                this.setState({
+                    data: [...displayData],
+                    displayData: [...displayData]
+                });
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }
 
     handleSearch = (event,name) => {
@@ -111,57 +116,66 @@ class Display extends Component {
               return 2;
             }
             return 1;
-          }
+        }
+        let element = <h2>You have to login first...</h2>
+        if(sessionStorage.getItem('token')) {
+            element = (
+                <Fragment>
+                    <div className={classes.searchbar}>
+                        <Autocomplete
+                            freeSolo
+                            id="autocomplete"
+                            disableClearable
+                            options={this.state.data.map((option) => option.imagename)}
+                            classes={{
+                                popupIndicator: classes.popupIndicator,
+                                clearIndicator: classes.clearIndicator,
+                                popupIndicatorOpen: classes.popupIndicatorOpen,
+                                paper: classes.paper,
+                                option: classes.option,
+                            }}
+                            onChange={(event,value) => {
+                                this.handleSearch(event,value);
+                            }}
+                            renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                placeholder="Search image name..."
+                                margin="normal"
+                                variant="outlined"
+                                InputProps={{ ...params.InputProps, type: 'search' }}
+                                classes={{
+                                    root: classes.searchroot,
+                                    notchedOutline: classes.notchedOutline,
+                                    focused: classes.focused,
+                                }}
+                                // onKeyUp={(event) => {
+                                //     this.handleChange(event);
+                                // }}
+                            />
+                            )}
+                        />
+                    </div>
+                    <div className={classes.root}>
+                        <GridList cellHeight={200} className={classes.gridList} cols={getGridListCols()} spacing={10}>
+                            {this.state.displayData.map((tile) => (
+                            <GridListTile key={tile._id} className={classes.tile}>
+                                <img src={tile.image} alt={tile.imagename} />
+                                <GridListTileBar
+                                title={tile.imagename}
+                                subtitle={<span>Date: {tile.imagedate}</span>}
+                                />
+                            </GridListTile>
+                            ))}
+                        </GridList>
+                    </div>
+                </Fragment>
+            );
+        }
         return (
             <Fragment>
-                <div className={classes.searchbar}>
-                    <Autocomplete
-                        freeSolo
-                        id="autocomplete"
-                        disableClearable
-                        options={this.state.displayData.map((option) => option.name)}
-                        classes={{
-                            popupIndicator: classes.popupIndicator,
-                            clearIndicator: classes.clearIndicator,
-                            popupIndicatorOpen: classes.popupIndicatorOpen,
-                            paper: classes.paper,
-                            option: classes.option,
-                        }}
-                        onChange={(event,value) => {
-                            this.handleSearch(event,value);
-                        }}
-                        renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            placeholder="Search image name..."
-                            margin="normal"
-                            variant="outlined"
-                            InputProps={{ ...params.InputProps, type: 'search' }}
-                            classes={{
-                                root: classes.searchroot,
-                                notchedOutline: classes.notchedOutline,
-                                focused: classes.focused,
-                            }}
-                            // onKeyUp={(event) => {
-                            //     this.handleChange(event);
-                            // }}
-                        />
-                        )}
-                    />
-                </div>
-                <div className={classes.root}>
-                    <GridList cellHeight={200} className={classes.gridList} cols={getGridListCols()} spacing={10}>
-                        {this.state.displayData.map((tile) => (
-                        <GridListTile key={tile.id} className={classes.tile}>
-                            <img src={tile.image} alt={tile.name} />
-                            <GridListTileBar
-                            title={tile.name}
-                            subtitle={<span>Date: {tile.date}</span>}
-                            />
-                        </GridListTile>
-                        ))}
-                    </GridList>
-                </div>
+                <Navbar option='View' token={sessionStorage.getItem('token')}/>
+                {element}
             </Fragment>
         )
     }
