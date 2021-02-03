@@ -3,6 +3,7 @@ let bodyParser = require('body-parser');
 const authRoutes = require('./routes/auth');
 const imgRoutes = require('./routes/image');
 const mongoose = require('mongoose');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
@@ -26,6 +27,14 @@ app.use((req,res,next) => {
 });
 app.use('/auth', authRoutes);
 app.use('/image', imgRoutes);
+
+if(process.env.NODE_ENV === 'production') {
+  app.use(express.static('frontend/build'));
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
+  })
+}
+
 app.listen(port, () => {
   console.log(`Listening to requests on http://localhost:${port}`);
 });
