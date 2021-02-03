@@ -63,15 +63,16 @@ const useStyles = makeStyles((theme) => ({
         }
     }
 
+    //function to login user
     const handleLogin = () => {
       const email = document.getElementById('login-email').value;
       const password = document.getElementById('login-password').value;
       if(email && password) {
         const userDetails = {email,password};
-        Axios.post('/auth/login',userDetails)
+        Axios.post('http://localhost:5000/auth/login',userDetails)
           .then(res => {
             console.log(res.data.message);
-            sessionStorage.setItem('token', res.data.token);
+            sessionStorage.setItem('token', res.data.token); //storing tjwt token in sessionstorage
             props.history.push('/upload');
           })
           .catch(err => {

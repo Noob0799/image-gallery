@@ -61,6 +61,7 @@ const SignUp = (props) => {
             props.history.push('/login');
         }
     }
+    //function to handle user signup
     const handleSignUp = () => {
       const fname = document.getElementById('firstName').value;
       const lname = document.getElementById('lastName').value;
@@ -69,10 +70,10 @@ const SignUp = (props) => {
       const password = document.getElementById('password').value;
       if(fname && lname && email && password) {
         const userDetails = {name,email,password};
-        Axios.post('/auth/signup',userDetails)
+        Axios.post('http://localhost:5000/auth/signup',userDetails)
           .then(res => {
             console.log(res.data.message);
-            props.history.push('/login');
+            props.history.push('/login'); //route to login component for login
           })
           .catch(err => {
             console.log(err);

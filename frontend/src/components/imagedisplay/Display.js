@@ -81,7 +81,8 @@ class Display extends Component {
             let displayData = [];
             const token = sessionStorage.getItem('token');
             const tokenString = `Bearer ${token}`;
-            Axios.get('/image/get',{ headers: { Authorization: tokenString } })
+            //fetch image data from backend rest api
+            Axios.get('http://localhost:5000/image/get',{ headers: { Authorization: tokenString } })
                 .then(res => {
                     console.log(res.data.message);
                     displayData = [...res.data.displayData];
@@ -97,6 +98,7 @@ class Display extends Component {
         }
     }
 
+    //function to handle searching and filtering of images
     handleSearch = (event,name) => {
         console.log(name);
         const displayData = this.state.data.filter(obj => {
@@ -107,19 +109,12 @@ class Display extends Component {
         });
     }
 
-    handleChange = (event) => {
-        console.log(event.target.value);
-        if(event.target.value.length === 0) {
-            this.setState({
-                displayData: [...this.state.data]
-            });
-        }
-    }
-
+    //function to open image in new tab
     handleClick = (url) => {
         window.location.assign(url);
     }
 
+    //function to handle clearance of searches from searchbar
     handleInputChange = (val) => {
         console.log('Input change', val);
         if(val.length === 0) {
@@ -147,7 +142,7 @@ class Display extends Component {
             return 1;
         }
         let element = <h2 style={{paddingTop: "10vh"}}>You have to login first...</h2>
-        if(sessionStorage.getItem('token')) {
+        if(sessionStorage.getItem('token')) { //protecting route
             element = (
                 <Fragment>
                     <div className={classes.searchbar}>

@@ -15,6 +15,7 @@ class Upload extends Component {
         }
     }
 
+    //function to get image after upload
     getUploadedImage = () => {
         let uploadedsolution = '';
         const file = document.getElementById("uploadtask").files[0];
@@ -30,6 +31,7 @@ class Upload extends Component {
         }
     }
 
+    //function to send image to store in db
     handleUpload = () => {
         const name = document.getElementById('imgname').value;
         const image = document.getElementById("uploadtask").files[0];
@@ -39,6 +41,7 @@ class Upload extends Component {
                 uploading: true
             });
             const imgname = name + new Date();
+            //image stored in firebase storage
             const uploadTask = storage.ref(`images/${imgname}`).put(image);
             uploadTask.on('state_changed', 
             (snapshot) => {},
@@ -49,16 +52,17 @@ class Upload extends Component {
                 });
             },
             () => {
+                //getting image url from firebase storage
                 storage.ref('images').child(imgname).getDownloadURL()
                     .then(url => {
                         console.log('URL', url);
                         const token = sessionStorage.getItem('token');
                         const tokenString = `Bearer ${token}`;
                         const imageData = {img: url,name,date};
-                        Axios.post("/image/upload", imageData, { headers: { Authorization: tokenString } })
+                        Axios.post("http://localhost:5000/image/upload", imageData, { headers: { Authorization: tokenString } })
                             .then(res => {
                                 console.log(res.data.message);
-                                this.props.history.push('/view');
+                                this.props.history.push('/view'); //routing to view component for image display
                             })
                             .catch(err => {
                                 console.log(err);
@@ -81,7 +85,7 @@ class Upload extends Component {
 
     render() {
         let element = <h2 style={{paddingTop: "10vh"}}>You have to login first...</h2>;
-        if(sessionStorage.getItem('token')) {
+        if(sessionStorage.getItem('token')) { //protecting route
             element = (
                 <div className={styles.container}>
                     <div className={styles.text}>
