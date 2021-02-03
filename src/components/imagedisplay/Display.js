@@ -46,9 +46,6 @@ const styles = theme => ({
             },
         },
     },
-    popupIndicatorOpen: {
-        transform: "scaleX(1)"
-    },
     paper: {
         marginTop: "0",
         border: "5px solid orange",
@@ -75,29 +72,55 @@ class Display extends Component {
     }
 
     componentDidMount() {
-        let displayData = [];
-        const token = sessionStorage.getItem('token');
-        const tokenString = `Bearer ${token}`;
-        Axios.get('http://localhost:5000/image/get',{ headers: { Authorization: tokenString } })
-            .then(res => {
-                console.log(res.data.message);
-                displayData = [...res.data.displayData];
-                this.setState({
-                    data: [...displayData],
-                    displayData: [...displayData]
-                });
-            })
-            .catch(err => {
-                console.log(err);
-            })
+        if(sessionStorage.getItem('token')) {
+            let displayData = [];
+            const token = sessionStorage.getItem('token');
+            const tokenString = `Bearer ${token}`;
+            Axios.get('http://localhost:5000/image/get',{ headers: { Authorization: tokenString } })
+                .then(res => {
+                    console.log(res.data.message);
+                    displayData = [...res.data.displayData];
+                    this.setState({
+                        data: [...displayData],
+                        displayData: [...displayData]
+                    });
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        }
     }
 
     handleSearch = (event,name) => {
         console.log(name);
+        const displayData = this.state.data.filter(obj => {
+            return obj.imagename === name
+        });
+        this.setState({
+            displayData: [...displayData]
+        });
     }
 
     handleChange = (event) => {
         console.log(event.target.value);
+        if(event.target.value.length === 0) {
+            this.setState({
+                displayData: [...this.state.data]
+            });
+        }
+    }
+
+    handleClick = (url) => {
+        window.location.assign(url);
+    }
+
+    handleInputChange = (val) => {
+        console.log('Input change', val);
+        if(val.length === 0) {
+            this.setState({
+                displayData: [...this.state.data]
+            });
+        }
     }
 
     render() {
@@ -128,15 +151,15 @@ class Display extends Component {
                             disableClearable
                             options={this.state.data.map((option) => option.imagename)}
                             classes={{
-                                popupIndicator: classes.popupIndicator,
-                                clearIndicator: classes.clearIndicator,
-                                popupIndicatorOpen: classes.popupIndicatorOpen,
                                 paper: classes.paper,
                                 option: classes.option,
                             }}
                             onChange={(event,value) => {
                                 this.handleSearch(event,value);
                             }}
+                            // onClose={this.handleClose}
+                            // onHighlightChange={(event,option) => this.handleHighlightChange(option)}
+                            onInputChange={(event,value) => this.handleInputChange(value)}
                             renderInput={(params) => (
                             <TextField
                                 {...params}
@@ -159,7 +182,7 @@ class Display extends Component {
                     <div className={classes.root}>
                         <GridList cellHeight={200} className={classes.gridList} cols={getGridListCols()} spacing={10}>
                             {this.state.displayData.map((tile) => (
-                            <GridListTile key={tile._id} className={classes.tile}>
+                            <GridListTile key={tile._id} className={classes.tile} onClick={() => this.handleClick(tile.image)}>
                                 <img src={tile.image} alt={tile.imagename} />
                                 <GridListTileBar
                                 title={tile.imagename}
