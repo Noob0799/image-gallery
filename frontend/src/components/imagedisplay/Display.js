@@ -179,19 +179,27 @@ class Display extends Component {
                             )}
                         />
                     </div>
-                    <div className={classes.root}>
-                        <GridList cellHeight={200} className={classes.gridList} cols={getGridListCols()} spacing={10}>
-                            {this.state.displayData.map((tile) => (
-                            <GridListTile key={tile._id} className={classes.tile} onClick={() => this.handleClick(tile.image)}>
-                                <img src={tile.image} alt={tile.imagename} />
-                                <GridListTileBar
-                                title={tile.imagename}
-                                subtitle={<span>Date: {tile.imagedate}</span>}
-                                />
-                            </GridListTile>
-                            ))}
-                        </GridList>
-                    </div>
+                    {
+                        this.state.displayData.length > 0 ?
+                        (
+                            <div className={classes.root}>
+                                <GridList cellHeight={200} className={classes.gridList} cols={getGridListCols()} spacing={10}>
+                                    {this.state.displayData.map((tile) => (
+                                    <GridListTile key={tile._id} className={classes.tile} onClick={() => this.handleClick(tile.image)}>
+                                        <img src={tile.image} alt={tile.imagename} />
+                                        <GridListTileBar
+                                        title={tile.imagename}
+                                        subtitle={<span>Date: {tile.imagedate}</span>}
+                                        />
+                                    </GridListTile>
+                                    ))}
+                                </GridList>
+                            </div>
+                        ) : 
+                        (
+                            <h2 style={{paddingTop: "10vh"}}>You do not have any saved images...</h2>
+                        )
+                    }
                 </Fragment>
             );
         }

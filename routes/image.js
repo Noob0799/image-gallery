@@ -71,6 +71,7 @@ router.post('/upload', (req,res,next) => {
                     email: email,
                     imageArray: [...imageArray]
                 });
+                console.log(img)
                 img.save()
                     .then(result => {
                         console.log(result);
