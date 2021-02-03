@@ -55,7 +55,7 @@ class Upload extends Component {
                         const token = sessionStorage.getItem('token');
                         const tokenString = `Bearer ${token}`;
                         const imageData = {img: url,name,date};
-                        Axios.post("http://localhost:5000/image/upload", imageData, { headers: { Authorization: tokenString } })
+                        Axios.post("/image/upload", imageData, { headers: { Authorization: tokenString } })
                             .then(res => {
                                 console.log(res.data.message);
                                 this.props.history.push('/view');
