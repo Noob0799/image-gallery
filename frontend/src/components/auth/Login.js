@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
       const password = document.getElementById('login-password').value;
       if(email && password) {
         const userDetails = {email,password};
-        Axios.post('http://localhost:5000/auth/login',userDetails)
+        Axios.post('/auth/login',userDetails)
           .then(res => {
             console.log(res.data.message);
             sessionStorage.setItem('token', res.data.token); //storing tjwt token in sessionstorage

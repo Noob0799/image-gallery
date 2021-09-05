@@ -82,7 +82,7 @@ class Display extends Component {
             const token = sessionStorage.getItem('token');
             const tokenString = `Bearer ${token}`;
             //fetch image data from backend rest api
-            Axios.get('http://localhost:5000/image/get',{ headers: { Authorization: tokenString } })
+            Axios.get('/image/get',{ headers: { Authorization: tokenString } })
                 .then(res => {
                     console.log(res.data.message);
                     displayData = [...res.data.displayData];
