@@ -5,7 +5,7 @@ To upload images and store them in a database so that they can be later viewed a
 MERN,Firebase Storage,Material-UI,Bootstrap
 
 ## Instructions  
-1.git clone and open project directory  
+1.git clone and open project directory 
 2.npm install  
 3.nodemon server.js, this starts backend at localhost:5000  
 4.In new terminal, cd frontend  
