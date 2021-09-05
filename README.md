@@ -18,6 +18,3 @@ MERN,Firebase Storage,Material-UI,Bootstrap
 11.If user already has account created, then user can view his uploaded images already in View component.  
 12.User can filter the images and search based on image name.  
 13.User can logout by clicking on signout button on top right corner of page. This will route user to Landing page again.  
-
-## User credentials already created:  
-1. email: abcd@gmail.com password: abcd
