@@ -4,14 +4,14 @@ const authRoutes = require('./routes/auth');
 const imgRoutes = require('./routes/image');
 const mongoose = require('mongoose');
 const path = require('path');
-require('dotenv').config();
+require('dotenv').config({path: __dirname + '/.env'});
 
 const app = express();
 const port = process.env.PORT || "5000";
 app.use(bodyParser.json({limit: '10MB', extended: true}))
 app.use(bodyParser.urlencoded({limit: '10MB', extended: true}))
 
-mongoose.connect("mongodb+srv://noob0799:" + process.env.MONGO_ATLAS_PW + "@cluster0.5xmsy.mongodb.net/<dbname>?retryWrites=true&w=majority", { useNewUrlParser: true,  useUnifiedTopology: true})
+mongoose.connect(`mongodb+srv://noob:${process.env.MONGODB_API_KEY}@cluster0.qyvlb.mongodb.net/${process.env.MONGODB_DB_NAME}?retryWrites=true&w=majority`, { useNewUrlParser: true,  useUnifiedTopology: true})
   .then(() => {
     console.log("Connected to database!");
   })

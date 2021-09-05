@@ -3,7 +3,7 @@ import 'firebase/storage';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyDig5-2VxrX0ALfnovRpoSBVJBzvun_B8A",
+    apiKey: `${process.env.REACT_APP_FIREBASE_API_KEY}`,
     authDomain: "image-album-e0fc6.firebaseapp.com",
     projectId: "image-album-e0fc6",
     storageBucket: "image-album-e0fc6.appspot.com",

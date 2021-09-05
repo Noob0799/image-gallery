@@ -51,6 +51,7 @@ router.post('/signup', (req,res,next) => {
 
 router.post('/login', (req,res,next) => {
     console.log(req.body);
+    console.log(process.env.JWT_KEY);
     User.find({ email: req.body.email })
     .exec()
     .then(user => {
