@@ -21,5 +21,3 @@ MERN,Firebase Storage,Material-UI,Bootstrap
 
 ## User credentials already created:  
 1. email: abcd@gmail.com password: abcd
-2. email: abcd1@gmail.com password: abcd
-3. email: abcd2@gmail.com password: abcd
